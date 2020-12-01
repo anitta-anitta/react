@@ -13,7 +13,7 @@ class Home extends React.Component{
     }
 
     onDeposite = (event)=>{
-        event.preventDefault;
+        event.preventDefault();
         let username=this.state.dpUsername;
         let amt=Number(this.state.dpAmount);
         //let btag=document.querySelector("#bal");
@@ -26,6 +26,7 @@ class Home extends React.Component{
                      typeOfTranscation:"Credit",
                      amount:amt
                  })
+                 Bank.saveData(); // to save history
                 this.setState({balance:bal});
                  swal("Deposit Successfully")
            }
@@ -54,7 +55,9 @@ class Home extends React.Component{
                data[username]["history"].push({
                 typeOfTranscation:"Debit",
                 amount:amt
-            })
+            });
+            Bank.saveData();
+                
                 swal("Withdraw suceesfully")
              }
      }

@@ -5,6 +5,7 @@ import Login from './Login';
 import Home from './Home';
 import Register from './Register';
 import Transcationhistory from './Transcationhistory';
+import Users from './Users';
 import{
   BrowserRouter,
   Switch,
@@ -38,6 +39,9 @@ class App extends React.Component{
            </Route>
            <Route path="/history">
             <Transcationhistory/>
+           </Route>
+           <Route path="/users">
+            <Users/>
            </Route>
            </Switch>
            </div>
