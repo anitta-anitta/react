@@ -1,5 +1,8 @@
-import { useRouteMatch } from "react-router-dom";
+//import { useRouteMatch } from "react-router-dom";
 
+import axios from 'axios';
+
+const baseUrl="http://localhost:4000";
 let data={  
  
     user1:{username:"user1",acno:1001,password:"username",balance:3000,history:[]},
@@ -8,30 +11,33 @@ let data={
     
  
  };
+
  let newDate = localStorage.getItem("data");
- alert(newDate);
+// alert(newDate);
  if(newDate){
     data = JSON.parse(newDate);             //new user can login.
  }
 
  class Bank{
-    static currentUser="";
+    
+      static currentUser="";
 
-    static getUser(){
-        const currentUser = localStorage.getItem("currentUser");
-         return currentUser;
-      }
+      static getAccountDetails(){
+         return data;
+        }
 
       static saveData(){
          localStorage.setItem("data", JSON.stringify(data)); //to store full data covert object to string
       }
      
-     static getAccountDetails(){
-       return data;
-      }
+     
     static setCurrentUser(username){
       localStorage.setItem("currentUser",username);  //setting currentuser to local storage
    
+    }
+
+    static getCurrentUser(){
+      return localStorage.getItem("currentUser");
     }
 
     static addUser(username,password,acno){
@@ -46,13 +52,32 @@ let data={
 
     static deleteUser(username){
        delete data[username];
+       Bank.saveData();
     }
     static getHistory(){
        return data[Bank.getUser()].history;
     }
-   // static getUser(){
-    //   return data[Bank.currentUser];
-    //}
+   static login(username,password){
+      return axios.post("http://localhost:4000/users/login",{
+         username,
+         password
+      })
+   }
+
+   static registration(username,password,confirmPassword,acno){
+      return axios.post("baseUrl+/users/register",{
+         username,
+         password,
+         confirmPassword,
+         acno
+      },{withCredentials:true})
+   }
+   static deposit(username,amount){
+      return axios.post("baseUrl+/users/deposit",{
+         username,
+         amount
+      })
+   }
  }
  export default Bank;
  

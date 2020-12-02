@@ -44,17 +44,27 @@ class Register extends React.Component{
         let confirmPassword=this.state.confirmPassword;
         let acno=this.state.acno;
         
-        let data=Bank.getAccountDetails();
-        if(username in data){
-           swal("Registration Failed","user already exist,plz login");
-        }else if(password!==confirmPassword){
-             swal("Registration failed","password and confirm password dosen't match");
-        }else{
-             Bank.addUser(username,password,acno);
-             swal("Registrarion Success","your registration has successfully completed");
-             this.props.history.push("/");
-             event.preventDefault();
-         }
+      Bank.registration(username,password,confirmPassword,acno)
+      .then(response=>{
+        swal("Registration sucess!",response.data.message, "sucess");
+        this.props.history.push("/login");
+       })
+       .catch(err=>{
+         swal("registration failed",err.response.data.message,"error");
+       });
+    
+
+       // let data=Bank.getAccountDetails();
+        //if(username in data){
+          // swal("Registration Failed","user already exist,plz login");
+        //}else if(password!==confirmPassword){
+          //   swal("Registration failed","password and confirm password dosen't match");
+        //}else{
+             //Bank.addUser(username,password,acno);
+             //swal("Registrarion Success","your registration has successfully completed");
+             //this.props.history.push("/");
+           //  event.preventDefault();
+         //}
         }
 
     render(){

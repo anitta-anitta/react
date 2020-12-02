@@ -14,38 +14,55 @@ class Login extends React.Component{
   }
   
   onUsernameChange = (event)=>{
-    this.setState({ username:event.target.value });
+    this.setState({ 
+      username:event.target.value 
+    });
     //alert(event.target.value);
   }
+
   onPasswordChange = (event)=>{
-    this.setState({password:event.target.value});
+    this.setState({
+      password:event.target.value
+    });
   }
+
   onSubmit = (event) =>{
     event.preventDefault();
     let username=this.state.username;
     let pwd=this.state.password;
-    let data=Bank.getAccountDetails();
-    console.log(data);
-    if(username in data){
 
-      let password=data[username].password
-      if(pwd===password){
-       
-        Bank.setCurrentUser(username);
-        swal("login success!");
-       // window.location.href="home.html"
-       this.props.history.push("/home");
-      }
-      else{
-
-        swal("incorrect username or password");
-      }
-     }
-     else{
-
-        alert("user doesnot exist")
-     }
+    Bank.login(username,pwd)
+    .then(response=>{
+     swal("login sucess!",response.data.message, "sucess");
+     this.props.history.push("/home");
+    })
+    .catch(error=>{
+      swal("Login failed","incorrect username or password","login failed");
+    })
+ 
   }
+   // let data=Bank.getAccountDetails();
+    //console.log(data);
+    //if(username in data){
+
+      //let password=data[username].password
+      //if(pwd===password){
+       
+        //Bank.setCurrentUser(username);
+        //swal("login success!");
+       // window.location.href="home.html"
+       //this.props.history.push("/home");
+      //}
+      //else{
+
+        //swal("incorrect username or password");
+      //}
+     //}
+     //else{
+
+       // alert("user doesnot exist")
+     //}
+  //}
     render(){
 
         return(
@@ -85,7 +102,8 @@ class Login extends React.Component{
       
       </div>
         );
-    }
-}
+        }
+      }
+    
 
 export default withRouter(Login);

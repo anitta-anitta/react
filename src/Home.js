@@ -16,23 +16,32 @@ class Home extends React.Component{
         event.preventDefault();
         let username=this.state.dpUsername;
         let amt=Number(this.state.dpAmount);
+
+     Bank.deposit(username,amt)
+        .then(response=>{
+            swal("Deposit sucessfully!");
+        })
+           .catch(err=>{
+             swal("failed","u provide invalid data","error");
+        });
+
         //let btag=document.querySelector("#bal");
-        let data=Bank.getAccountDetails();
-     if(username in data){
-                data[username]["balance"]+=amt
-                let bal=data[username]["balance"]
+      //  let data=Bank.getAccountDetails();
+     i///if(username in data){
+          //      data[username]["balance"]+=amt
+            //    let bal=data[username]["balance"]
                  //btag.textContent="avaliable balance:"+bal
-                 data[username]["history"].push({
-                     typeOfTranscation:"Credit",
-                     amount:amt
-                 })
-                 Bank.saveData(); // to save history
-                this.setState({balance:bal});
-                 swal("Deposit Successfully")
-           }
-     else{
-           swal("Invalid user")
-     }
+              //   data[username]["history"].push({
+                //     typeOfTranscation:"Credit",
+                  //   amount:amt
+              //   })
+                // Bank.saveData(); // to save history
+             //   this.setState({balance:bal});
+               //  swal("Deposit Successfully")
+        //   }
+    // else{
+      //     swal("Invalid user")
+     //}
      
 
     }
