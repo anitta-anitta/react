@@ -4,8 +4,12 @@ import Bank from './Bank';
 
 
 class Transcationhistory extends React.Component{
+
+    state= {
+        history:[]
+    }
       render(){
-          let history = Bank.getHistory();
+         // let history = Bank.getHistory();
           return(<div className="container">
                   <h1>Transcation History</h1>
 
@@ -15,7 +19,7 @@ class Transcationhistory extends React.Component{
                         <th>Amount</th>
                     </tr>
                     {
-                        history.map(h=><tr>
+                        this.state.history.map(h=><tr>
                                 <td>{h.typeOfTranscation}</td>
                                 <td>{h.amount}</td>
                             </tr>)
@@ -24,6 +28,12 @@ class Transcationhistory extends React.Component{
 
                   </div>
           )
+      }
+      componentDidMount(){
+          Bank.history()
+            .then(response=>{
+               this.setState({history:response.data.history})
+            })
       }
 }
 

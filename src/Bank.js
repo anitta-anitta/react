@@ -55,17 +55,17 @@ let data={
        Bank.saveData();
     }
     static getHistory(){
-       return data[Bank.getUser()].history;
+       return data[Bank.getCurrentUser()].history;
     }
    static login(username,password){
       return axios.post("http://localhost:4000/users/login",{
          username,
          password
-      })
+      },{withCredentials:true})
    }
 
    static registration(username,password,confirmPassword,acno){
-      return axios.post("baseUrl+/users/register",{
+      return axios.post(baseUrl+"/users/register",{
          username,
          password,
          confirmPassword,
@@ -73,10 +73,19 @@ let data={
       },{withCredentials:true})
    }
    static deposit(username,amount){
-      return axios.post("baseUrl+/users/deposit",{
+      return axios.post(baseUrl+"/users/deposit",{
          username,
          amount
-      })
+      },{withCredentials:true})
+   }
+   static withdraw(username,amount){
+      return axios.post(baseUrl+"/users/withdraw",{
+         username,
+         amount
+      },{withCredentials:true})
+   }
+   static history(){
+      return axios.get(baseUrl+"/users/transcation-history",{withCredentials:true})
    }
  }
  export default Bank;

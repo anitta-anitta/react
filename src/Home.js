@@ -19,15 +19,16 @@ class Home extends React.Component{
 
      Bank.deposit(username,amt)
         .then(response=>{
+            this.setState({balance:response.data.balance});
             swal("Deposit sucessfully!");
         })
-           .catch(err=>{
+        .catch(err=>{
              swal("failed","u provide invalid data","error");
         });
 
         //let btag=document.querySelector("#bal");
       //  let data=Bank.getAccountDetails();
-     i///if(username in data){
+     ///if(username in data){
           //      data[username]["balance"]+=amt
             //    let bal=data[username]["balance"]
                  //btag.textContent="avaliable balance:"+bal
@@ -49,30 +50,40 @@ class Home extends React.Component{
          event.preventDefault();
          let username=this.state.wdUsername
          let amt=Number(this.state.wdAmount);
+
+         Bank.withdraw(username,amt)
+         .then(response=>{
+            this.setState({balance:response.data.balance});
+             swal("Withdraw sucessfully!",response.data.message,"sucess");
+         })
+         .catch(err=>{
+              swal("failed","u provide invalid data","error");
+         });
+ 
          // let btag=document.querySelector("#bal");
-         let data=Bank.getAccountDetails();
-     if(username in data){
-             let avlbal=data[username]["balance"]
-             if(amt>avlbal){
-             swal("insufficient balance")
-           }
-     else{
-              data[username]["balance"]-=amt
-               let bal=data[username]["balance"]
+        // let data=Bank.getAccountDetails();
+   // if(username in data){
+       //      let avlbal=data[username]["balance"]
+       //      if(amt>avlbal){
+        //     swal("insufficient balance")
+       //    }
+   //  else{
+        //      data[username]["balance"]-=amt
+        //       let bal=data[username]["balance"]
                // btag.textContent="available balance:"+bal
-               this.setState({balance:bal});
-               data[username]["history"].push({
-                typeOfTranscation:"Debit",
-                amount:amt
-            });
-            Bank.saveData();
+          //     this.setState({balance:bal});
+          //     data[username]["history"].push({
+          //      typeOfTranscation:"Debit",
+           //     amount:amt
+        //    });
+        //    Bank.saveData();
                 
-                swal("Withdraw suceesfully")
-             }
-     }
-     else{
-        swal("Invalid user")
-     }
+         //       swal("Withdraw suceesfully")
+         //    }
+   //  }
+   //  else{
+   //     swal("Invalid user")
+   //  }
    
     }
     dpUsernameChange = (event)=>{
