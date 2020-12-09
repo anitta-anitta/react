@@ -18,6 +18,11 @@ class Transcationhistory extends React.Component{
                         <th>Type of Transcation</th>
                         <th>Amount</th>
                     </tr>
+
+                    {
+                        this.state.history.length==0?
+                        <tr><td>No data</td></tr>:null
+                    }
                     {
                         this.state.history.map(h=><tr>
                                 <td>{h.typeOfTranscation}</td>

@@ -3,6 +3,21 @@ import React from 'react';
 import swal from 'sweetalert';
 import Bank from './Bank';
 import { withRouter } from 'react-router';
+import { Formik, Form, Field} from 'formik';
+import * as  Yup from 'yup';
+
+const loginValidations = Yup.object().shape({
+  username:  Yup.string()
+  .min(2, 'Too long')
+  .max(10, 'Too short')
+  .required('Required'),
+  password:  Yup.string()
+  .min(2, 'Too long')
+  .max(10,'Too short')
+  .required('Required')
+
+})
+
 
 class Register extends React.Component{
 
