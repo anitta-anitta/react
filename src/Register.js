@@ -11,10 +11,18 @@ const loginValidations = Yup.object().shape({
   .min(2, 'Too long')
   .max(10, 'Too short')
   .required('Required'),
-  password:  Yup.string()
+  Password:  Yup.string()
   .min(2, 'Too long')
   .max(10,'Too short')
-  .required('Required')
+  .required('Required'),
+  ConfirmPassword:  Yup.string()
+  .min(2, 'Too long')
+  .max(10,'Too short')
+  .required('Required'),
+  acno: {
+    min: ({ min }) => ({ key: 'field_too_short', values: { min } }),
+    max: ({ max }) => ({ key: 'field_too_big', values: { max } }),
+  },
 
 })
 
@@ -29,35 +37,35 @@ class Register extends React.Component{
 
     }
 
-    onUsernameChange = (event)=>{
-        this.setState({ 
-            username:event.target.value
-         });
+   // onUsernameChange = (event)=>{
+     //   this.setState({ 
+       //     username:event.target.value
+         //});
         //alert(event.target.value);
-      }
-      onPasswordChange = (event)=>{
-        this.setState({
-            password:event.target.value
-        });
-      }
-      onConfirmPasswordChange = (event)=>{
-        this.setState({ 
-            confirmPassword:event.target.value
-         });
+     // }
+     // onPasswordChange = (event)=>{
+       // this.setState({
+         //   password:event.target.value
+      //  });
+     // }
+      //onConfirmPasswordChange = (event)=>{
+        //this.setState({ 
+          //  confirmPassword:event.target.value
+       //  });
         
-      }
-      onAcnoChange = (event)=>{
-        this.setState({
-            acno:event.target.value
-        });
-      }
+      //}
+      //onAcnoChange = (event)=>{
+        //this.setState({
+          //  acno:event.target.value
+       // });
+      //}
 
-      onSubmit = (event) =>{
-        event.preventDefault();
-        let username=this.state.username;
-        let password=this.state.password;
-        let confirmPassword=this.state.confirmPassword;
-        let acno=this.state.acno;
+      onSubmit = (values) =>{
+       
+        let username=values.username;
+        let password=values.password;
+        let confirmPassword=values.confirmPassword;
+        let acno=values.acno;
         
       Bank.registration(username,password,confirmPassword,acno)
       .then(response=>{
@@ -97,31 +105,50 @@ class Register extends React.Component{
 
         <div className="jumbrtron">
           
-          <form onSubmit={this.onSubmit}>
+        <Formik   initialValues={{
+                 username: "",
+                 password:"",
+                 confirmPassword:"",
+                 acno:""
+               }}
+               validationSchema={loginValidations}
+              onSubmit={this.onSubmit}  >
+          
+        {({errors, touched}) => ( 
+            <Form>
          <div className="form-group">
               <label for="exampleInputEmail1">Username</label>
-              <input type="text" value={this.state.username} onChange={this.onUsernameChange} className="form-control" id="uname"/>
-              <small id="emailHelp" className="form-text text-muted">We'll never share your Username with anyone else.</small>
+              <Field name="username"/>
+              {errors.username?<div>{errors.username}</div>:null}
+             
          </div>
         <div className="form-group">
               <label for="exampleInputEmail1">Acno</label>
-              <input type="text" value={this.state.acno} onChange={this.onAcnoChange} className="form-control" id="acno"/>
+              <Field name="acno"/>
+              {errors.acno?<div>{errors.acno}</div>:null}
          
         </div>
 
         <div className="form-group">
               <label for="exampleInputPassword1">Password</label>
-              <input type="password" value={this.state.password} onChange={this.onPasswordChange} className="form-control" id="pwd"/>
+              <Field name="Password" type="password" />
+              {errors.password?<div>{errors.password}</div>:null}
+         
         </div>
 
          <div className="form-group">
               <label for="exampleInputPassword1">Confirm Password</label>
-              <input type="password" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} className="form-control" id="pwd"/>
-        </div>
+              <Field name="confirmPassword" type="password"/>
+              {errors.confirmPassword?<div>{errors.confirmPassword}</div>:null}
+         
+          </div>    
             
-        <button type="submit" className="btn btn-primary" >Submit</button>
-            </form>
-           
+         <button type="submit" className="btn btn-primary" >Submit</button>
+           </Form>
+
+            )}    
+            </Formik>
+
           </div>
          
         
