@@ -2,20 +2,31 @@ import React from 'react';
 import Bank from './Bank';
 import swal from 'sweetalert';
 import { Link }  from 'react-router-dom';
+import { Formik, Form, Field} from 'formik';
+import * as  Yup from 'yup';
+
+const withdrawalSchema = Yup.object().shape({
+    wdUsername:  Yup.string()
+    .min(2, 'Too long')
+    .max(10, 'Too short')
+    .required('Required')
+})
+ const depositSchema = Yup.object().shape({
+    wdAmount:  Yup.string()
+    .min(2, 'Too long')
+    .max(10,'Too short')
+    .required('Required'),
+})
 
 class Home extends React.Component{
     state={
-        dpUsername:"",
-        dpAmount:"",
-        wdUsername:"",
-        wdAmount:"",
+       
         balance:""
     }
 
-    onDeposite = (event)=>{
-        event.preventDefault();
-        let username=this.state.dpUsername;
-        let amt=Number(this.state.dpAmount);
+    onDeposite = (values)=>{
+        let username=values.dpUsername;
+        let amt=Number(values.dpAmount);
 
      Bank.deposit(username,amt)
         .then(response=>{
@@ -46,10 +57,10 @@ class Home extends React.Component{
      
 
     }
-    onWithdraw = (event)=>{
-         event.preventDefault();
-         let username=this.state.wdUsername
-         let amt=Number(this.state.wdAmount);
+    onWithdraw = (values)=>{
+        
+         let username=values.wdUsername
+         let amt=Number(values.wdAmount);
 
          Bank.withdraw(username,amt)
          .then(response=>{
@@ -115,36 +126,62 @@ class Home extends React.Component{
              <Link to="/history">History</Link>
                   <div className="row">
                     <div className="col-6">
-                    
-                        <div className="jumbotron">
-                            <form onSubmit={this.onDeposite}>
+                     <div className="jumbotron">
+
+              <Formik  
+                      initialValues={{
+                             dpUsername: "",
+                             dpAmount:""
+                
+                       }}
+                      validationSchema={withdrawalSchema}
+                       onSubmit={this.onSubmit}  >
+          
+                 {({errors, touched}) => ( 
+                  
+                        <Form> 
                             <h4>Deposit</h4>
                             <div className="form-group">
                                 <label for="exampleInputEmail1">Username</label>
-                                <input type="text" value={this.state.dpUsername} onChange={this.dpUsernameChange} className="form-control" id="uname" aria-describedby="emailHelp"></input>
+                                <Field name="dpUsername" className="form-control"/>
                             </div>
                             <div className="form-group">
                                 <label for="exampleInputPassword1">Amount</label>
-                                <input type="text" value={this.state.dpAmount} onChange={this.dpAmountChange} className="form-control" id="amt"></input>
+                                <Field name="dpAmount"  className="form-control"/>
                             </div>
                             <button type="submit" class="btn btn-primary">Deposit</button>
-                       </form>
-                        </div>
-                    </div>
+                       </Form>
+                      )}    
+             </Formik>
+             </div>
+             </div>
+                   
                     <div className="col-6">
-                        <div className="jumbotron">
-                            <form onSubmit={this.onWithdraw}>
+                    <div className="jumbotron">
+
+                 <Formik  
+                            initialValues={{
+                             wdUsername: "",
+                             wdAmount:""
+                
+                       }}
+                      validationSchema={depositSchema}
+                         onSubmit={this.onSubmit}  >
+                   {({errors, touched}) => ( 
+                            <Form>
                             <h4>Withdraw</h4>
                             <div className="form-group">
-                                <label for="exampleInputEmail1">Username</label>
-                                <input type="text" value={this.state.wdUsername} onChange={this.wdUsernameChange} className="form-control" id="uname" aria-describedby="emailHelp"></input>
+                                <label for="exampleInputEmail1">Username</label> 
+                                <Field name="wdUsername"  className="form-control"/>          
                             </div>
                             <div className="form-group">
                                 <label for="exampleInputPassword1">Amount</label>
-                                <input type="text" value={this.state.wdAmount} onChange={this.wdAmountChange} className="form-control" id="amt"></input>
+                                <Field name="wdAmount"  className="form-control"/>
                             </div>
                             <button type="submit" className="btn btn-primary">Withdraw</button>
-                            </form>
+                            </Form>
+                            )}    
+             </Formik>
                         </div>
                     </div>
                 </div>

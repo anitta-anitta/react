@@ -19,11 +19,6 @@ const loginValidations = Yup.object().shape({
   .min(2, 'Too long')
   .max(10,'Too short')
   .required('Required'),
-  acno: {
-    min: ({ min }) => ({ key: 'field_too_short', values: { min } }),
-    max: ({ max }) => ({ key: 'field_too_big', values: { max } }),
-  },
-
 })
 
 
