@@ -1,15 +1,28 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import swal from 'sweetalert';
 import Bank from './Bank';
 
 
 class Users extends React.Component{
+    state = {
+        users:[]
+    }
     deleteUser(username){
         Bank.deleteUser(username);
+        swal("Sucess!","User deleted sucessfully");
         this.setState({}); // to re-render
     }
+
+    componentDidMount(){
+        Bank.getUsers()
+         .then(response=>{
+            this.setState({
+                users:response.data.users
+            }); 
+         })
+    }
       render(){
-          let users = Bank.getUsers();
           return(<div className="container">
                   <h1>Users</h1>
 
@@ -19,11 +32,11 @@ class Users extends React.Component{
                         <th>Balance</th>
                     </tr>
                     {
-                       Object.keys(users).map(key=><tr>   
+                       this.state.users.map(user=><tr>   
 
-                                <td>{users[key].username}</td>
-                                <td>{users[key].balance}</td>
-                                <td onClick={()=>{this.deleteUser(key)}}>Delete</td>
+                                <td>{user.username}</td>
+                                <td>{user.balance}</td>
+                                <td onClick={()=>{this.deleteUser(user)}}>Delete</td>
                             </tr>)
                     }
                 </table>

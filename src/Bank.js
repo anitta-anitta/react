@@ -5,9 +5,9 @@ import axios from 'axios';
 const baseUrl="http://localhost:4000";
 let data={  
  
-    user1:{username:"user1",acno:1001,password:"username",balance:3000,history:[]},
-    user2:{username:"user2",acno:1002,password:"username2",balance:3000,history:[]},
-    user3:{username:"user3",acno:1003,password:"username3",balance:3000,history:[]},
+ //   user1:{username:"user1",acno:1001,password:"username",balance:3000,history:[]},
+//    user2:{username:"user2",acno:1002,password:"username2",balance:3000,history:[]},
+  //  user3:{username:"user3",acno:1003,password:"username3",balance:3000,history:[]},
     
  
  };
@@ -46,9 +46,9 @@ let data={
        Bank.saveData();
     }
 
-    static getUsers(){
-       return data;
-    }
+  //  static getUsers(){
+    //   return data;
+ //   }
 
     static deleteUser(username){
        delete data[username];
@@ -86,6 +86,9 @@ let data={
    }
    static history(){
       return axios.get(baseUrl+"/users/transcation-history",{withCredentials:true})
+   }
+   static getUsers(){
+      return axios.get(baseUrl+"/users",{withCredentials:true})
    }
  }
  export default Bank;

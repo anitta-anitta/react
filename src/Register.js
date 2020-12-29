@@ -15,7 +15,7 @@ const loginValidations = Yup.object().shape({
   .min(2, 'Too long')
   .max(10,'Too short')
   .required('Required'),
-  ConfirmPassword:  Yup.string()
+  confirmPassword:  Yup.string()
   .min(2, 'Too long')
   .max(10,'Too short')
   .required('Required'),
@@ -58,10 +58,10 @@ class Register extends React.Component{
       onSubmit = (values) =>{
        
         let username=values.username;
-        let password=values.password;
+        let password=values.Password;
         let confirmPassword=values.confirmPassword;
         let acno=values.acno;
-        
+        console.log(values);
       Bank.registration(username,password,confirmPassword,acno)
       .then(response=>{
         swal("Registration sucess!",response.data.message, "sucess");
